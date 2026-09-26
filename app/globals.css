@@ -1,0 +1,297 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════════════════ */
+/* THREE-LAYER TOKEN ARCHITECTURE (design-system.md)                       */
+/* Layer 1: Primitives (Raw Palette)                                       */
+/* Layer 2: Semantics (Purpose Aliases & Theming)                          */
+/* Layer 3: Components (Abstraction & State Variants)                      */
+/* ═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── LAYER 1: PRIMITIVE TOKENS ── */
+  --p-blue-500:     #0984E3;   /* Electric Blue — primary brand anchor */
+  --p-blue-600:     #0769B5;   /* Electric Blue, darkened for hover / high-contrast button base */
+  --p-blue-700:     #055A9A;   /* Electric Blue, darkened for active press / button hover */
+  --p-blue-800:     #04487D;   /* Electric Blue, deep darkened for button active press */
+  --p-blue-100:     #DBEEFE;   /* Electric Blue, lightened wash */
+  --p-blue-50:      #EBF5FF;   /* Electric Blue, barely-there tint */
+
+  --p-cyan-500:     #00CEC9;   /* Cyan — micro-accent only */
+  --p-cyan-600:     #00B3AE;   /* Cyan, darkened */
+  --p-cyan-100:     #CCFAF9;   /* Cyan, lightened wash */
+  --p-cyan-50:      #E6FDFC;   /* Cyan, barely-there tint */
+
+  --p-night-900:    #1E272E;   /* Night Black — deepest dark surface */
+  --p-night-800:    #25333B;   /* Elevated dark surface */
+  --p-night-700:    #33434C;   /* Dark borders, subtle separators */
+  --p-night-600:    #3D5159;   /* Dark muted elements */
+
+  --p-slate-950:    #0B0F14;   /* Near-black, dark theme deep background */
+  --p-slate-900:    #101619;   /* Dark theme page background */
+  --p-slate-850:    #17212B;   /* Light theme primary text */
+  --p-slate-500:    #64748B;   /* Muted text, metadata */
+  --p-slate-400:    #94A3B8;   /* Lighter muted text */
+  --p-slate-350:    #A8B3BA;   /* Dark theme muted text */
+  --p-slate-200:    #DCE3EA;   /* Light theme borders */
+  --p-slate-100:    #EDF0F5;   /* Subtle surface tint */
+  --p-slate-50:     #F5F6FA;   /* Cloud White — primary light background */
+  --p-white:        #FFFFFF;   /* Pure white surfaces */
+
+  --p-green-500:    #10B981;   /* Success */
+  --p-green-50:     #ECFDF5;
+  --p-red-500:      #EF4444;   /* Error / Destructive */
+  --p-red-50:       #FEF2F2;
+  --p-amber-500:    #F59E0B;   /* Warning */
+  --p-amber-50:     #FFFBEB;
+
+  /* ── LAYER 2: SEMANTIC TOKENS (Light Theme Default) ── */
+  --background:           var(--p-slate-50);       /* #F5F6FA Cloud White canvas */
+  --surface:              var(--p-white);          /* #FFFFFF Cards, modals, sheets */
+  --surface-elevated:     var(--p-white);          /* #FFFFFF Floating panels, sticky nav */
+  --surface-subtle:       var(--p-slate-100);      /* #EDF0F5 Hover wells, pill backgrounds */
+
+  --text-primary:         var(--p-slate-850);      /* #17212B Headlines, body text */
+  --text-muted:           var(--p-slate-500);      /* #64748B Metadata, captions, dates */
+  --text-inverse:         var(--p-white);          /* #FFFFFF Text on dark/primary surfaces */
+
+  --primary:              var(--p-blue-500);       /* #0984E3 CTAs, active navigation, links */
+  --primary-hover:        var(--p-blue-600);       /* #0769B5 Button hover */
+  --primary-active:       var(--p-blue-700);       /* #055A9A Button press */
+  --primary-wash:         var(--p-blue-50);        /* #EBF5FF Subtle highlight background */
+  --accent:               var(--p-cyan-500);       /* #00CEC9 Micro-accents, status nodes */
+  --accent-hover:         var(--p-cyan-600);       /* #00B3AE Accent hover */
+  --accent-wash:          var(--p-cyan-50);        /* #E6FDFC Accent tint background */
+
+  --border:               var(--p-slate-200);      /* #DCE3EA Card outlines, grid guides */
+  --border-subtle:        rgba(220, 227, 234, 0.6);/* Hairline coordinate grids */
+  --ring:                 var(--p-blue-500);       /* #0984E3 Focus ring */
+
+  --success:              var(--p-green-500);
+  --success-wash:         var(--p-green-50);
+  --error:                var(--p-red-500);
+  --error-wash:           var(--p-red-50);
+  --warning:              var(--p-amber-500);
+  --warning-wash:         var(--p-amber-50);
+
+  --shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md:  0 2px 8px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-lg:  0 4px 16px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
+  --shadow-xl:  0 8px 32px rgba(0, 0, 0, 0.10), 0 4px 8px rgba(0, 0, 0, 0.05);
+
+  /* ── LAYER 3: COMPONENT TOKENS ── */
+  --btn-primary-bg:           var(--p-blue-600);   /* #0769B5 — guarantees 5.7:1 WCAG AA contrast with white text */
+  --btn-primary-bg-hover:     var(--p-blue-700);   /* #055A9A */
+  --btn-primary-bg-active:    var(--p-blue-800);   /* #04487D */
+  --btn-primary-text:         var(--p-white);      /* #FFFFFF */
+  --btn-outline-border:       var(--border);
+  --btn-outline-text:         var(--text-primary);
+  --btn-ghost-text:           var(--p-blue-600);
+
+  --card-bg:                  var(--surface);
+  --card-border:              var(--border);       /* 1px structural containment */
+  --card-shadow:              var(--shadow-sm);
+  --card-shadow-hover:        var(--shadow-md);
+  --card-radius:              var(--radius-lg);
+
+  --nav-bg:                   var(--surface);
+  --nav-backdrop:             rgba(255, 255, 255, 0.9);
+  --nav-border:               var(--border);
+  --nav-link-text:            var(--text-primary);
+  --nav-link-active:          var(--primary);
+  --nav-height:               4.5rem;              /* 72px */
+
+  --badge-bg:                 var(--surface-subtle);
+  --badge-text:               var(--text-muted);
+  --badge-primary-bg:         var(--primary-wash);
+  --badge-primary-text:       var(--primary);
+
+  --input-bg:                 var(--surface);
+  --input-border:             var(--border);
+  --input-border-focus:       var(--primary);
+  --input-text:               var(--text-primary);
+  --input-placeholder:        var(--text-muted);
+
+  /* Footer Tokens (design-system.md §5.9 - Constant Night Black across themes) */
+  --footer-bg:                var(--p-night-900);
+  --footer-surface:           var(--p-night-800);
+  --footer-border:            var(--p-night-700);
+  --footer-text-primary:      var(--p-slate-50);
+  --footer-text-muted:        var(--p-slate-400);
+  --footer-accent:            var(--p-cyan-500);
+  --footer-link-hover:        var(--p-blue-500);
+
+  /* ── SCALES & GEOMETRY ── */
+  --radius-sm:    4px;
+  --radius-md:    6px;
+  --radius-lg:    10px;
+  --radius-xl:    16px;
+  --radius-full:  9999px;
+
+  --space-0:  0;
+  --space-1:  0.25rem;   /* 4px */
+  --space-2:  0.5rem;    /* 8px */
+  --space-3:  0.75rem;   /* 12px */
+  --space-4:  1rem;      /* 16px */
+  --space-5:  1.25rem;   /* 20px */
+  --space-6:  1.5rem;    /* 24px */
+  --space-8:  2rem;      /* 32px */
+  --space-10: 2.5rem;    /* 40px */
+  --space-12: 3rem;      /* 48px */
+  --space-16: 4rem;      /* 64px */
+  --space-20: 5rem;      /* 80px */
+  --space-24: 6rem;      /* 96px */
+  --space-28: 7rem;      /* 112px */
+  --space-32: 8rem;      /* 128px */
+
+  /* ── FLUID TYPOGRAPHY TOKENS (clamp) ── */
+  --text-display-1:  clamp(2.75rem, 5vw, 4.5rem);
+  --text-h1:         clamp(2.25rem, 4vw, 3.25rem);
+  --text-h2:         clamp(1.75rem, 3vw, 2.25rem);
+  --text-h3:         1.375rem;
+  --text-h4:         1.125rem;
+  --text-body-lg:    1.125rem;
+  --text-body:       1.0rem;
+  --text-body-sm:    0.875rem;
+  --text-meta:       0.875rem;
+  --text-eyebrow:    0.75rem;
+  --text-mono:       0.8125rem;
+  --text-mono-lg:    1.0rem;
+
+  /* ── MOTION TOKENS ── */
+  --duration-micro:   150ms;
+  --duration-fast:    200ms;
+  --duration-normal:  250ms;
+  --duration-slow:    400ms;
+  --duration-slower:  600ms;
+
+  --ease-out:         cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-smooth:      cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out:      cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+/* ── DARK THEME OVERRIDES ── */
+[data-theme="dark"] {
+  --background:           var(--p-slate-900);       /* #101619 Deep black canvas */
+  --surface:              var(--p-night-900);       /* #1E272E Night Black cards */
+  --surface-elevated:     var(--p-night-800);       /* #25333B Floating panels, sticky nav */
+  --surface-subtle:       var(--p-night-700);       /* #33434C Hover wells */
+
+  --text-primary:         var(--p-slate-50);        /* #F5F6FA Primary reading text */
+  --text-muted:           var(--p-slate-350);       /* #A8B3BA Metadata, captions */
+  --text-inverse:         var(--p-slate-850);       /* #17212B Text on light surfaces */
+
+  --primary:              var(--p-blue-500);        /* #0984E3 Consistent across themes */
+  --primary-hover:        #3BA2F0;                  /* Lightened for dark bg hover */
+  --primary-active:       #5FB5F5;
+  --primary-wash:         rgba(9, 132, 227, 0.12);
+  --accent:               var(--p-cyan-500);        /* #00CEC9 Consistent */
+  --accent-hover:         #33DBD7;
+  --accent-wash:          rgba(0, 206, 201, 0.10);
+
+  --border:               var(--p-night-700);       /* #33434C */
+  --border-subtle:        rgba(51, 67, 76, 0.6);
+  --ring:                 var(--p-cyan-500);        /* #00CEC9 Cyan ring in dark theme */
+
+  --nav-backdrop:         rgba(30, 39, 46, 0.9);
+
+  --success:              #34D399;
+  --success-wash:         rgba(16, 185, 129, 0.12);
+  --error:                #F87171;
+  --error-wash:           rgba(239, 68, 68, 0.12);
+  --warning:              #FBBF24;
+  --warning-wash:         rgba(245, 158, 11, 0.12);
+
+  --shadow-sm:  0 1px 3px rgba(0, 0, 0, 0.20);
+  --shadow-md:  0 2px 10px rgba(0, 0, 0, 0.25), 0 1px 3px rgba(0, 0, 0, 0.15);
+  --shadow-lg:  0 4px 20px rgba(0, 0, 0, 0.30), 0 2px 6px rgba(0, 0, 0, 0.15);
+  --shadow-xl:  0 8px 40px rgba(0, 0, 0, 0.35), 0 4px 10px rgba(0, 0, 0, 0.20);
+}
+
+/* ── BASE HTML STYLES & ACCESSIBILITY ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light dark;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: 1.65;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+}
+
+/* ── VISIBLE KEYBOARD FOCUS (WCAG 2.2 AA) ── */
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* ── SKIP TO CONTENT LINK ── */
+.skip-to-content {
+  position: absolute;
+  top: -100px;
+  left: 1rem;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  background: var(--surface);
+  color: var(--primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: var(--shadow-lg);
+  transition: top var(--duration-fast) var(--ease-out);
+}
+
+.skip-to-content:focus {
+  top: 1rem;
+}
+
+/* ── PREFERS REDUCED MOTION (MANDATORY) ── */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── STRUCTURAL CONTAINER (design-system.md §4.2) ── */
+.layout-container {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .layout-container {
+    padding-inline: var(--space-6);
+  }
+}
+
+@media (min-width: 1024px) {
+  .layout-container {
+    padding-inline: var(--space-12);
+  }
+}
+
+@media (min-width: 1440px) {
+  .layout-container {
+    padding-inline: var(--space-16);
+  }
+}
