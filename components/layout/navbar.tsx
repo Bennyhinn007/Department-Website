@@ -5,33 +5,50 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Menu, ChevronDown, ArrowRight } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
 import { navigationConfig, NavItem } from "@/lib/navigation";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { MobileDrawer } from "@/components/layout/mobile-drawer";
+import { Magnetic } from "@/components/motion/magnetic";
 import { cn } from "@/lib/utils";
 
 /**
- * Global Navbar — Swiss Modernist Architectural Edition (Phase 4X)
+ * Global Navbar — Swiss Modernist Architectural Edition with Designer Motion
  *
- * Implements:
- * - Institutional Top Telemetry Strip (Session metadata, NBA Tier-1 accreditation, active system status)
- * - Precision Geometric Department Crest (Interlocking shield + mesh node topology)
- * - Typographic Nav Hierarchy (Inter, letter-spaced, architectural underline indicators rather than SaaS pills)
- * - Full Radix UI Dropdown Menu integration with keyboard navigation
- * - Deterministic Mobile Drawer trigger with 48x48px accessible touch target
- * - Complete WCAG 2.2 AA accessibility and focus management
+ * Upgraded Features:
+ * - Dynamic scroll elevation (hairline border & backdrop blur intensification)
+ * - Magnetic CTA button with physics-based hover
+ * - Layout-animated hover indicator for navigation links
+ * - Retains 48x48px accessible touch targets and full keyboard navigation
  */
 export function Navbar() {
   const pathname = usePathname();
   const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [isScrolled, setIsScrolled] = React.useState(false);
+  const [hoveredNav, setHoveredNav] = React.useState<string | null>(null);
+  const prefersReduced = useReducedMotion();
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full transition-colors duration-150">
+      <header className="sticky top-0 z-40 w-full transition-all duration-200">
         {/* ── ZONE 0: INSTITUTIONAL TELEMETRIC TOP STRIP (Hidden on mobile < 768px) ── */}
-        <div className="w-full bg-surface-subtle/80 border-b border-border text-[11px] font-mono text-text-muted py-1 hidden md:block select-none">
+        <div
+          className={cn(
+            "w-full bg-surface-subtle/80 border-b border-border text-[11px] font-mono text-text-muted py-1 hidden md:block select-none transition-all duration-200",
+            isScrolled && "opacity-90 py-0.5"
+          )}
+        >
           <Container className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <span className="flex items-center gap-1.5 font-medium text-text-primary">
@@ -48,10 +65,10 @@ export function Navbar() {
               <span className="text-border" aria-hidden="true">|</span>
               <Link
                 href="/contact"
-                className="hover:text-primary transition-colors font-medium flex items-center gap-1"
+                className="hover:text-primary transition-colors font-medium flex items-center gap-1 group"
               >
                 <span>OFFICIAL INQUIRIES</span>
-                <ArrowRight className="w-3 h-3 stroke-[1.5]" aria-hidden="true" />
+                <ArrowRight className="w-3 h-3 stroke-[1.5] group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
               </Link>
             </div>
           </Container>
@@ -59,7 +76,10 @@ export function Navbar() {
 
         {/* ── ZONE 1: PRIMARY MAIN NAVIGATION BAR ── */}
         <nav
-          className="w-full h-[68px] sm:h-[72px] bg-surface/95 backdrop-blur-md border-b border-border shadow-sm transition-colors duration-150"
+          className={cn(
+            "w-full h-[68px] sm:h-[72px] bg-surface/90 backdrop-blur-md border-b transition-all duration-200",
+            isScrolled ? "border-border/90 shadow-md bg-surface/95" : "border-border shadow-sm"
+          )}
           aria-label="Main Navigation"
         >
           <Container className="h-full flex items-center justify-between gap-4">
@@ -105,9 +125,12 @@ export function Navbar() {
             </Link>
 
             {/* ── SUB-ZONE 1B: DESKTOP INLINE NAVIGATION (≥ 1024px) ── */}
-            <div className="hidden lg:flex items-center gap-1 xl:gap-2 h-full">
-              {navigationConfig.mainNav.map((item: NavItem, index: number) => {
-                const numericIndex = `0${index + 1}`;
+            <div
+              className="hidden lg:flex items-center gap-1 xl:gap-2 h-full relative"
+              onMouseLeave={() => setHoveredNav(null)}
+            >
+              {navigationConfig.mainNav.map((item: NavItem) => {
+                const isHovered = hoveredNav === item.label;
 
                 if (item.children && item.children.length > 0) {
                   // Dropdown Menu Item (e.g. About Department)
@@ -120,17 +143,28 @@ export function Navbar() {
                       <DropdownMenu.Trigger asChild>
                         <button
                           type="button"
+                          onMouseEnter={() => setHoveredNav(item.label)}
                           className={cn(
                             "relative h-full inline-flex items-center gap-1.5 px-3",
                             "font-body text-[13px] xl:text-[14px] font-medium transition-colors duration-150",
                             "focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2",
-                            isChildActive
-                              ? "text-primary font-semibold border-b-2 border-primary"
-                              : "text-text-muted hover:text-text-primary border-b-2 border-transparent"
+                            isChildActive ? "text-primary font-semibold" : "text-text-muted hover:text-text-primary"
                           )}
                         >
                           <span>{item.label}</span>
                           <ChevronDown className="w-3.5 h-3.5 stroke-[1.5] opacity-70" aria-hidden="true" />
+
+                          {/* Dynamic Active / Hover Sliding Underline */}
+                          {(isHovered || isChildActive) && !prefersReduced && (
+                            <motion.div
+                              layoutId="navbar-indicator"
+                              className={cn(
+                                "absolute bottom-0 left-2 right-2 h-[2px]",
+                                isChildActive ? "bg-primary" : "bg-primary/50"
+                              )}
+                              transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                            />
+                          )}
                         </button>
                       </DropdownMenu.Trigger>
 
@@ -193,17 +227,28 @@ export function Navbar() {
                   <Link
                     key={item.href}
                     href={item.href}
+                    onMouseEnter={() => setHoveredNav(item.label)}
                     aria-current={isActive ? "page" : undefined}
                     className={cn(
                       "relative h-full inline-flex items-center px-3",
                       "font-body text-[13px] xl:text-[14px] font-medium transition-colors duration-150",
                       "focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2",
-                      isActive
-                        ? "text-primary font-semibold border-b-2 border-primary"
-                        : "text-text-muted hover:text-text-primary border-b-2 border-transparent"
+                      isActive ? "text-primary font-semibold" : "text-text-muted hover:text-text-primary"
                     )}
                   >
                     <span>{item.label}</span>
+
+                    {/* Dynamic Active / Hover Sliding Underline */}
+                    {(isHovered || isActive) && !prefersReduced && (
+                      <motion.div
+                        layoutId="navbar-indicator"
+                        className={cn(
+                          "absolute bottom-0 left-2 right-2 h-[2px]",
+                          isActive ? "bg-primary" : "bg-primary/50"
+                        )}
+                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      />
+                    )}
                   </Link>
                 );
               })}
@@ -214,33 +259,37 @@ export function Navbar() {
               {/* Theme Toggle — Persistent across all breakpoints */}
               <ThemeToggle />
 
-              {/* Desktop Primary CTA Button (≥ 1024px) */}
+              {/* Desktop Primary CTA Button with Magnetic Physics (≥ 1024px) */}
               <div className="hidden lg:block">
-                <Link href={navigationConfig.primaryCta.href}>
-                  <Button variant="primary" size="md">
-                    <span>{navigationConfig.primaryCta.label}</span>
-                    <ArrowRight className="w-3.5 h-3.5 stroke-[1.5]" aria-hidden="true" />
-                  </Button>
-                </Link>
+                <Magnetic strength={0.25}>
+                  <Link href={navigationConfig.primaryCta.href}>
+                    <Button variant="primary" size="md">
+                      <span>{navigationConfig.primaryCta.label}</span>
+                      <ArrowRight className="w-3.5 h-3.5 stroke-[1.5]" aria-hidden="true" />
+                    </Button>
+                  </Link>
+                </Magnetic>
               </div>
 
               {/* Tablet & Mobile Hamburger Trigger (< 1024px) */}
-              <button
-                type="button"
-                onClick={() => setDrawerOpen(true)}
-                aria-label="Open navigation menu"
-                aria-expanded={drawerOpen}
-                aria-controls="navigation-drawer"
-                className={cn(
-                  "lg:hidden inline-flex items-center justify-center",
-                  "w-12 h-12 rounded-[var(--radius-md)]", // 48x48px accessible touch target
-                  "text-text-primary hover:bg-surface-subtle border border-border",
-                  "focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2",
-                  "transition-colors duration-150"
-                )}
-              >
-                <Menu className="w-5 h-5 stroke-[1.5]" aria-hidden="true" />
-              </button>
+              <Magnetic strength={0.2}>
+                <button
+                  type="button"
+                  onClick={() => setDrawerOpen(true)}
+                  aria-label="Open navigation menu"
+                  aria-expanded={drawerOpen}
+                  aria-controls="navigation-drawer"
+                  className={cn(
+                    "lg:hidden inline-flex items-center justify-center",
+                    "w-12 h-12 rounded-[var(--radius-md)]", // 48x48px accessible touch target
+                    "text-text-primary hover:bg-surface-subtle border border-border",
+                    "focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2",
+                    "transition-colors duration-150"
+                  )}
+                >
+                  <Menu className="w-5 h-5 stroke-[1.5]" aria-hidden="true" />
+                </button>
+              </Magnetic>
             </div>
           </Container>
         </nav>

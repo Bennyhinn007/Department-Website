@@ -6,6 +6,10 @@ import { ArrowRight, ShieldCheck, Award, Cpu, Network, Lock, Layers, Activity } 
 import { motion, useReducedMotion } from "motion/react";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
+import { Hero3DVisual } from "@/components/sections/hero-3d-visual";
+import { Magnetic } from "@/components/motion/magnetic";
+import { Tilt3D } from "@/components/motion/tilt-3d";
+import { TextStagger } from "@/components/motion/text-stagger";
 
 /**
  * Technical Architecture Layers for the Integrated Engineering Bus
@@ -65,8 +69,10 @@ const ARCHITECTURE_LAYERS: ArchitectureLayer[] = [
  *
  * Distinctive Architecture:
  * - Full-bleed architectural system frame with registration marks and technical coordinate header
- * - Expansive editorial typographic opening in Plus Jakarta Sans 700 with mathematical scale contrast
- * - Integrated Cyber-Physical Architecture Bus that visually interweaves IoT hardware and cryptography
+ * - Expansive editorial typographic opening in Plus Jakarta Sans 700 with spring text stagger
+ * - Integrated 3D Interactive Cyber-Physical Architecture Model with mouse parallax
+ * - Magnetic buttons with physics-based cursor attraction
+ * - 3D Perspective tilt with dynamic specular spotlight on metrics ledger
  * - Replaced "Explore Programs" with valid existing journeys (/about, /faculty, /contact)
  * - Motion-sequenced reveals with strict prefers-reduced-motion fallback
  * - WCAG 2.2 AA compliant, 80/15/5 color discipline, and zero synthetic AI slop
@@ -161,13 +167,13 @@ export function Hero() {
                 </span>
               </motion.div>
 
-              {/* Display Headline in Plus Jakarta Sans */}
+              {/* Display Headline in Plus Jakarta Sans with spring word entrance */}
               <motion.h1
                 id="hero-title"
                 variants={itemVariants}
                 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] xl:text-[3.75rem] font-bold tracking-tight text-text-primary leading-[1.08]"
               >
-                Engineering Resilient Connected Systems & Cryptographic Defenses.
+                <TextStagger text="Engineering Resilient Connected Systems & Cryptographic Defenses." />
               </motion.h1>
 
               {/* Lead Editorial Narrative (Inter, Body-lg) */}
@@ -180,99 +186,107 @@ export function Hero() {
                 stress-test, and protect critical cyber-physical ecosystems.
               </motion.p>
 
-              {/* Action Vectors — Grounded strictly in existing routes (No "Explore Programs") */}
+              {/* Action Vectors with Magnetic Physics Interaction */}
               <motion.div
                 variants={itemVariants}
                 className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto"
               >
-                <Link href="/about" className="w-full sm:w-auto">
-                  <Button variant="primary" size="lg" className="w-full sm:w-auto">
-                    <span>Department Overview</span>
-                    <ArrowRight className="w-4 h-4 stroke-[1.5]" aria-hidden="true" />
-                  </Button>
-                </Link>
+                <Magnetic strength={0.25} className="w-full sm:w-auto">
+                  <Link href="/about" className="w-full sm:w-auto block">
+                    <Button variant="primary" size="lg" className="w-full sm:w-auto group">
+                      <span>Department Overview</span>
+                      <ArrowRight className="w-4 h-4 stroke-[1.5] group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+                    </Button>
+                  </Link>
+                </Magnetic>
 
-                <Link href="/faculty" className="w-full sm:w-auto">
-                  <Button variant="outline" size="lg" className="w-full sm:w-auto">
-                    <span>Faculty Directory & Research</span>
-                  </Button>
-                </Link>
+                <Magnetic strength={0.2} className="w-full sm:w-auto">
+                  <Link href="/faculty" className="w-full sm:w-auto block">
+                    <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                      <span>Faculty Directory & Research</span>
+                    </Button>
+                  </Link>
+                </Magnetic>
 
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center justify-center gap-1.5 px-4 py-3 text-xs font-semibold font-mono text-text-muted hover:text-primary transition-colors text-center sm:text-left"
-                >
-                  <span>OFFICIAL INQUIRIES</span>
-                  <ArrowRight className="w-3.5 h-3.5 stroke-[1.5]" aria-hidden="true" />
-                </Link>
+                <Magnetic strength={0.15}>
+                  <Link
+                    href="/contact"
+                    className="inline-flex items-center justify-center gap-1.5 px-4 py-3 text-xs font-semibold font-mono text-text-muted hover:text-primary transition-colors text-center sm:text-left group"
+                  >
+                    <span>OFFICIAL INQUIRIES</span>
+                    <ArrowRight className="w-3.5 h-3.5 stroke-[1.5] group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
+                  </Link>
+                </Magnetic>
               </motion.div>
             </div>
 
-            {/* Right Column: Institutional Verification Ledger */}
-            <motion.div
-              variants={itemVariants}
-              className="lg:col-span-4 rounded-[var(--radius-lg)] bg-surface border border-border p-6 space-y-5 shadow-sm"
-            >
-              <div className="flex items-center justify-between pb-3 border-b border-border text-[11px] font-mono text-text-muted select-none">
-                <span className="font-semibold text-text-primary uppercase tracking-wider">
-                  INSTITUTIONAL METRICS
-                </span>
-                <span>PRD VERIFIED</span>
-              </div>
+            {/* Right Column: Institutional Verification Ledger with 3D Tilt */}
+            <motion.div variants={itemVariants} className="lg:col-span-4">
+              <Tilt3D maxRotation={6} perspective={1000} glareColor="rgba(9, 132, 227, 0.08)">
+                <div className="rounded-[var(--radius-lg)] bg-surface border border-border p-6 space-y-5 shadow-sm">
+                  <div className="flex items-center justify-between pb-3 border-b border-border text-[11px] font-mono text-text-muted select-none">
+                    <span className="font-semibold text-text-primary uppercase tracking-wider">
+                      INSTITUTIONAL METRICS
+                    </span>
+                    <span>PRD VERIFIED</span>
+                  </div>
 
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <ShieldCheck className="w-5 h-5 text-primary flex-shrink-0 mt-0.5 stroke-[1.5]" aria-hidden="true" />
-                  <div className="space-y-0.5">
-                    <p className="font-body font-semibold text-sm text-text-primary">
-                      NBA Tier-1 Accredited
-                    </p>
-                    <p className="font-body text-xs text-text-muted">
-                      Full Washington Accord compliance for global professional parity
-                    </p>
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-3">
+                      <ShieldCheck className="w-5 h-5 text-primary flex-shrink-0 mt-0.5 stroke-[1.5]" aria-hidden="true" />
+                      <div className="space-y-0.5">
+                        <p className="font-body font-semibold text-sm text-text-primary">
+                          NBA Tier-1 Accredited
+                        </p>
+                        <p className="font-body text-xs text-text-muted">
+                          Full Washington Accord compliance for global professional parity
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3 pt-3 border-t border-border/70">
+                      <Award className="w-5 h-5 text-primary flex-shrink-0 mt-0.5 stroke-[1.5]" aria-hidden="true" />
+                      <div className="space-y-0.5">
+                        <p className="font-body font-semibold text-sm text-text-primary">
+                          NAAC A++ Institutional Grade
+                        </p>
+                        <p className="font-body text-xs text-text-muted">
+                          Premier research evaluation benchmark and autonomous faculty council
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3 pt-3 border-t border-border/70">
+                      <Activity className="w-5 h-5 text-accent flex-shrink-0 mt-0.5 stroke-[1.5]" aria-hidden="true" />
+                      <div className="space-y-0.5">
+                        <p className="font-body font-semibold text-sm text-text-primary">
+                          6 Research Testbeds
+                        </p>
+                        <p className="font-body text-xs text-text-muted">
+                          Cyber range, SCADA controller grids, and embedded IoT testing benches
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-2 border-t border-border text-[11px] font-mono text-text-muted flex justify-between">
+                    <span>FACULTY COUNCIL</span>
+                    <span className="text-primary font-semibold">12+ DOCTORAL CHAIRS</span>
                   </div>
                 </div>
-
-                <div className="flex items-start gap-3 pt-3 border-t border-border/70">
-                  <Award className="w-5 h-5 text-primary flex-shrink-0 mt-0.5 stroke-[1.5]" aria-hidden="true" />
-                  <div className="space-y-0.5">
-                    <p className="font-body font-semibold text-sm text-text-primary">
-                      NAAC A++ Institutional Grade
-                    </p>
-                    <p className="font-body text-xs text-text-muted">
-                      Premier research evaluation benchmark and autonomous faculty council
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3 pt-3 border-t border-border/70">
-                  <Activity className="w-5 h-5 text-accent flex-shrink-0 mt-0.5 stroke-[1.5]" aria-hidden="true" />
-                  <div className="space-y-0.5">
-                    <p className="font-body font-semibold text-sm text-text-primary">
-                      6 Research Testbeds
-                    </p>
-                    <p className="font-body text-xs text-text-muted">
-                      Cyber range, SCADA controller grids, and embedded IoT testing benches
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="pt-2 border-t border-border text-[11px] font-mono text-text-muted flex justify-between">
-                <span>FACULTY COUNCIL</span>
-                <span className="text-primary font-semibold">12+ DOCTORAL CHAIRS</span>
-              </div>
+              </Tilt3D>
             </motion.div>
           </div>
 
           {/* ═══════════════════════════════════════════════════════ */}
-          {/* ZONE 3: INTEGRATED CYBER-PHYSICAL ARCHITECTURE BUS     */}
-          {/* (Replaces the generic isolated screenshot/box mockup)   */}
+          {/* ZONE 3: SOPHISTICATED 3D HERO VISUAL & ARCHITECTURE BUS */}
           {/* ═══════════════════════════════════════════════════════ */}
-          <motion.div
-            variants={itemVariants}
-            className="w-full rounded-[var(--radius-lg)] bg-surface border border-border shadow-sm p-6 sm:p-8 space-y-6"
-          >
+          <motion.div variants={itemVariants} className="space-y-6">
+            {/* Centerpiece 3D Interactive Multi-Plane Model */}
+            <Hero3DVisual />
+
+            {/* Deep-Dive Curricular Bus Layers */}
+            <div className="w-full rounded-[var(--radius-lg)] bg-surface border border-border shadow-sm p-6 sm:p-8 space-y-6">
             {/* Bus Header & Layer Selector */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-border">
               <div className="space-y-1">
@@ -400,6 +414,7 @@ export function Hero() {
                   </button>
                 );
               })}
+            </div>
             </div>
           </motion.div>
         </motion.div>
