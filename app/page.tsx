@@ -4,7 +4,8 @@ import { DepartmentIntro } from "@/components/sections/department-intro";
 
 /**
  * Department of IoT & Cyber Security — Official Homepage
- * Phase 4B: Hero + Stats Counter Strip + Department Introduction
+ * Visual Experience Redesign (Phase 4X)
+ * Scope: Hero + Stats Counter Strip + Department Introduction
  */
 export default function HomePage() {
   return (
@@ -20,3 +21,4 @@ export default function HomePage() {
     </>
   );
 }
+

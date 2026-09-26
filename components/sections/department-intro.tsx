@@ -1,104 +1,103 @@
 import * as React from "react";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { ArrowRight, CheckCircle2, Shield, Cpu, Terminal } from "lucide-react";
 import { Container } from "@/components/ui/container";
+import { Button } from "@/components/ui/button";
 
 /**
- * Department Introduction Section (design-system.md §12.3 & PRD.md §3.1, §3.2)
+ * Department Introduction — Editorial Monograph & Curricular Blueprint (Phase 4X)
  *
  * Implements:
- * - Editorial asymmetric 7/5 grid layout (avoiding generic centered SaaS patterns)
- * - Authoritative institutional copy explaining the IoT & Cyber convergence
- * - Left column: Restrained eyebrow, confident Plus Jakarta Sans H2, and narrative prose
- * - Right column: Unified structural panel detailing curriculum and engineering facets (avoiding 3-card anti-pattern)
+ * - Asymmetric 7/5 editorial composition (avoiding generic centered SaaS patterns)
+ * - Academic monograph styling with high-contrast Plus Jakarta Sans display typography
+ * - Authoritative institutional copy explaining the physical-world IoT and cyber convergence
+ * - Right-column Curricular Matrix detailing the 3 core research facets
  * - 80/15/5 color discipline (neutral surfaces, electric blue accents, restricted cyan telemetry)
- * - Complete Server Component architecture
+ * - 100% Server Component with zero client overhead
  */
 export function DepartmentIntro() {
   return (
     <section
       aria-labelledby="intro-heading"
-      className="w-full py-16 sm:py-20 lg:py-28 bg-background border-b border-border"
+      className="w-full py-16 sm:py-20 lg:py-28 bg-background border-b border-border relative overflow-hidden"
     >
       <Container>
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 xl:gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 xl:gap-16 items-start">
           {/* ═══════════════════════════════════════════════════════ */}
-          {/* LEFT COLUMN: 7 COLS (EDITORIAL NARRATIVE)             */}
+          {/* LEFT COLUMN: 7 COLS (EDITORIAL NARRATIVE & THESIS)    */}
           {/* ═══════════════════════════════════════════════════════ */}
-          <div className="lg:col-span-7 flex flex-col items-start space-y-6">
-            {/* Eyebrow */}
+          <div className="lg:col-span-7 flex flex-col items-start space-y-7">
+            {/* Architectural Chapter Eyebrow */}
             <div className="inline-flex items-center gap-2">
-              <span className="font-mono text-xs uppercase tracking-wider text-primary font-semibold">
-                01 // DEPARTMENT PROFILE
+              <span className="w-1.5 h-1.5 rounded-full bg-primary" aria-hidden="true" />
+              <span className="font-mono text-xs uppercase tracking-widest text-primary font-semibold">
+                CHAPTER 01 // FOUNDATIONAL MONOGRAPH
               </span>
             </div>
 
-            {/* Section Heading (H2 in Plus Jakarta Sans) */}
+            {/* Section Heading (Plus Jakarta Sans, H2) */}
             <h2
               id="intro-heading"
-              className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-text-primary leading-tight max-w-2xl"
+              className="font-display text-2xl sm:text-3xl lg:text-4xl xl:text-[2.6rem] font-bold tracking-tight text-text-primary leading-[1.15]"
             >
-              Where Physical-World Computing Converges With Defensive Architecture
+              Where Physical-World Computing Converges With Defensive Architecture.
             </h2>
 
-            {/* Lead Narrative (Inter, Body-lg) */}
-            <p className="font-body text-base lg:text-lg text-text-primary font-medium leading-relaxed max-w-2xl">
-              The Department of IoT & Cyber Security was established to address the defining
-              engineering challenge of our era: the profound interdependence between connected
-              hardware networks and cryptographic defense mechanisms.
-            </p>
-
-            {/* Detailed Body Paragraphs */}
-            <div className="space-y-4 text-sm sm:text-base text-text-muted leading-relaxed max-w-2xl">
-              <p>
-                As autonomous sensors, medical instruments, industrial SCADA controllers, and smart
-                utility grids interface directly with societal infrastructure, security can no
-                longer exist as an afterthought software patch. It must be engineered directly into
-                embedded silicon, real-time operating systems, wireless communication stacks, and
-                hardware-rooted cryptographic enclaves.
-              </p>
-              <p>
-                Scholars in the department encounter an experiential, laboratory-driven curriculum.
-                Rather than relying solely on abstract software models, education and inquiry
-                unfold through hands-on microcontroller testbeds, software-defined radio analysis,
-                ethical penetration simulations, and faculty-mentored research aligned with
-                national defense and industrial cyber standards.
+            {/* High-Impact Editorial Thesis Pull-Statement (Inter, Medium) */}
+            <div className="p-5 sm:p-6 rounded-[var(--radius-md)] bg-surface border-l-4 border-l-primary border border-border shadow-sm">
+              <p className="font-body text-sm sm:text-base text-text-primary font-medium leading-relaxed">
+                &ldquo;As autonomous sensors, medical instruments, industrial SCADA controllers, and smart utility grids interface directly with societal infrastructure, security can no longer exist as an afterthought software patch. It must be engineered directly into embedded silicon, real-time operating systems, wireless communication stacks, and hardware-rooted cryptographic enclaves.&rdquo;
               </p>
             </div>
 
-            {/* Contextual Link to /about */}
+            {/* Detailed Body Prose */}
+            <div className="space-y-4 text-sm sm:text-base text-text-muted leading-relaxed max-w-2xl font-body">
+              <p>
+                The Department of IoT & Cyber Security was established to address the defining engineering
+                challenge of our era: the profound interdependence between connected hardware networks and
+                cryptographic defense mechanisms. Rather than isolating hardware and security into disconnected
+                disciplines, our pedagogical paradigm treats them as indivisible facets of modern computing.
+              </p>
+              <p>
+                Scholars in the department encounter an experiential, laboratory-driven curriculum.
+                Rather than relying solely on abstract software models, inquiry unfolds through hands-on
+                microcontroller testbeds, software-defined radio analysis, ethical penetration simulations,
+                and faculty-mentored research aligned with national defense and industrial cyber standards.
+              </p>
+            </div>
+
+            {/* Action Vector Routing to /about */}
             <div className="pt-2">
-              <Link
-                href="/about"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-primary-hover transition-colors focus-visible:outline-2 focus-visible:outline-ring rounded-[var(--radius-sm)]"
-              >
-                <span>Explore Full Department History & Facilities</span>
-                <ArrowRight className="w-4 h-4 stroke-[1.5]" aria-hidden="true" />
+              <Link href="/about" className="inline-block">
+                <Button variant="primary" size="md">
+                  <span>Explore Department History & Facilities</span>
+                  <ArrowRight className="w-4 h-4 stroke-[1.5]" aria-hidden="true" />
+                </Button>
               </Link>
             </div>
           </div>
 
           {/* ═══════════════════════════════════════════════════════ */}
-          {/* RIGHT COLUMN: 5 COLS (STRUCTURED ARCHITECTURE PANEL)  */}
+          {/* RIGHT COLUMN: 5 COLS (CURRICULAR & RESEARCH BLUEPRINT) */}
           {/* ═══════════════════════════════════════════════════════ */}
           <div className="lg:col-span-5 w-full">
             <div className="rounded-[var(--radius-lg)] bg-surface border border-border shadow-sm p-6 sm:p-8 space-y-6">
-              {/* Technical Dossier Header */}
+              {/* Dossier Header */}
               <div className="flex items-center justify-between pb-4 border-b border-border text-[11px] font-mono text-text-muted select-none">
                 <span className="font-semibold text-text-primary uppercase tracking-wider">
-                  Academic Architecture
+                  CURRICULAR MATRIX
                 </span>
-                <span className="text-primary font-medium">CURRICULAR MATRIX</span>
+                <span className="text-primary font-medium">NBA TIER-1 ALIGNED</span>
               </div>
 
-              {/* Three Asymmetric Facets of Instruction */}
+              {/* Three Asymmetric Facets of Academic Instruction */}
               <div className="space-y-6">
-                {/* Facet 01 */}
-                <div className="space-y-1.5">
+                {/* Facet 01: Embedded Silicon */}
+                <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-primary" aria-hidden="true" />
                     <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider text-text-muted font-medium">
-                      01 // EMBEDDED SYSTEMS
+                      01 // SILICON & EMBEDDED COMPUTING
                     </span>
                   </div>
                   <h3 className="font-display font-semibold text-sm sm:text-base text-text-primary">
@@ -110,12 +109,12 @@ export function DepartmentIntro() {
                   </p>
                 </div>
 
-                {/* Facet 02 */}
-                <div className="space-y-1.5 pt-5 border-t border-border/70">
+                {/* Facet 02: Cyber Resilience */}
+                <div className="space-y-2 pt-5 border-t border-border/70">
                   <div className="flex items-center gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-primary" aria-hidden="true" />
                     <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider text-text-muted font-medium">
-                      02 // CYBER RESILIENCE
+                      02 // CYBER RESILIENCE & CRYPTOGRAPHY
                     </span>
                   </div>
                   <h3 className="font-display font-semibold text-sm sm:text-base text-text-primary">
@@ -127,12 +126,12 @@ export function DepartmentIntro() {
                   </p>
                 </div>
 
-                {/* Facet 03 */}
-                <div className="space-y-1.5 pt-5 border-t border-border/70">
+                {/* Facet 03: Experiential Praxis */}
+                <div className="space-y-2 pt-5 border-t border-border/70">
                   <div className="flex items-center gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-primary" aria-hidden="true" />
                     <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider text-text-muted font-medium">
-                      03 // EXPERIENTIAL PRAXIS
+                      03 // EXPERIENTIAL TESTBEDS
                     </span>
                   </div>
                   <h3 className="font-display font-semibold text-sm sm:text-base text-text-primary">
@@ -148,10 +147,10 @@ export function DepartmentIntro() {
               {/* Bottom Credential Verification Strip */}
               <div className="pt-4 border-t border-border flex items-center justify-between text-xs text-text-muted">
                 <div className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-3.5 h-3.5 stroke-[1.5] text-primary" aria-hidden="true" />
+                  <CheckCircle2 className="w-4 h-4 stroke-[1.5] text-primary" aria-hidden="true" />
                   <span className="font-medium text-text-primary">Outcome-Based Framework</span>
                 </div>
-                <span className="font-mono text-[11px] text-primary font-medium">NBA TIER-1</span>
+                <span className="font-mono text-[11px] text-primary font-semibold">NBA TIER-1</span>
               </div>
             </div>
           </div>

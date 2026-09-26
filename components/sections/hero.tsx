@@ -1,277 +1,408 @@
+"use client";
+
 import * as React from "react";
 import Link from "next/link";
-import { ArrowRight, ShieldCheck, Award, Cpu } from "lucide-react";
+import { ArrowRight, ShieldCheck, Award, Cpu, Network, Lock, Layers, Activity } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
 import { Container } from "@/components/ui/container";
 import { Button } from "@/components/ui/button";
 
 /**
- * Homepage Hero Section (design-system.md §12.1 & design.md §7.1)
+ * Technical Architecture Layers for the Integrated Engineering Bus
+ * Directly represents the curriculum and research scope in PRD.md §3.1 & §3.2
+ */
+interface ArchitectureLayer {
+  id: string;
+  tag: string;
+  title: string;
+  domain: string;
+  specs: string[];
+  telemetry: string;
+  status: string;
+}
+
+const ARCHITECTURE_LAYERS: ArchitectureLayer[] = [
+  {
+    id: "edge",
+    tag: "01 // PHYSICAL LAYER",
+    title: "Silicon & Embedded Sensors",
+    domain: "RISC-V Microcontrollers · LoRaWAN · CAN Bus · Deterministic Hardware",
+    specs: ["SPI / I2C Buses", "3.3V Low-Power Enclaves", "Physical Sensor Interfacing"],
+    telemetry: "SAMPLING: 100 kHz · DETERMINISTIC IO",
+    status: "HARDWARE ACTIVE",
+  },
+  {
+    id: "rtos",
+    tag: "02 // KERNEL LAYER",
+    title: "Embedded RTOS & Firmware",
+    domain: "Real-Time Operating Systems · Memory Protection Units (MPU) · Secure Boot",
+    specs: ["Task Isolation", "Memory-Safe Firmware", "Zero-Latency Interrupts"],
+    telemetry: "SCHEDULER: PREEMPTIVE · MPU ENFORCED",
+    status: "SECURE RUNTIME",
+  },
+  {
+    id: "crypto",
+    tag: "03 // SECURITY LAYER",
+    title: "Hardware Cryptographic Enclaves",
+    domain: "Hardware Security Modules (HSM) · Side-Channel Defense · Post-Quantum Primitives",
+    specs: ["AES-256-GCM Hardware Accel", "Fused Key Storage", "Entropy Source Verification"],
+    telemetry: "CIPHER: AES-GCM · ENTROPY VERIFIED",
+    status: "CRYPTOGRAPHIC ROOT",
+  },
+  {
+    id: "cyber",
+    tag: "04 // APPLICATION LAYER",
+    title: "Cyber Range & Industrial Systems",
+    domain: "SCADA Utility Testbeds · Network Forensics · Threat Modeling & Penetration",
+    specs: ["Zero-Trust Traffic Inspection", "SCADA Protocol Analyzers", "Live Defense Drills"],
+    telemetry: "NETWORK MESH: 6 TESTBEDS · CONTINUOUS MONITOR",
+    status: "DEFENSE DRILL LIVE",
+  },
+];
+
+/**
+ * Redesigned Homepage Hero — Swiss Modernist & Editorial Engineering Edition (Phase 4X)
  *
- * Implements:
- * - 7/5 Asymmetric Desktop Grid (Left: Content 7 cols; Right: Visual 5 cols)
- * - 90vh approximate minimum height on desktop viewports
- * - Eyebrow: Restrained JetBrains Mono technical indicator
- * - Headline: Plus Jakarta Sans with locked Display-1 token (clamp(2.75rem, 5vw, 4.5rem))
- * - Narrative: Inter with locked Body-lg token (1.125rem / 18px), max-width 56ch
- * - CTAs: Existing Button primitives (Primary using --btn-primary-bg, Outline secondary)
- * - Right Visual: Structured placeholder preserving exact 4:3 geometry, coordinate grid,
- *   subordinate SVG network topology schematic, and corner registration marks
- * - 80/15/5 color composition discipline (Zero neon, zero gradients, zero glassmorphism)
- * - WCAG 2.2 AA accessibility with semantic H1 and aria-hidden decorative SVGs
+ * Distinctive Architecture:
+ * - Full-bleed architectural system frame with registration marks and technical coordinate header
+ * - Expansive editorial typographic opening in Plus Jakarta Sans 700 with mathematical scale contrast
+ * - Integrated Cyber-Physical Architecture Bus that visually interweaves IoT hardware and cryptography
+ * - Replaced "Explore Programs" with valid existing journeys (/about, /faculty, /contact)
+ * - Motion-sequenced reveals with strict prefers-reduced-motion fallback
+ * - WCAG 2.2 AA compliant, 80/15/5 color discipline, and zero synthetic AI slop
  */
 export function Hero() {
+  const [activeLayer, setActiveLayer] = React.useState<number>(2); // Default to Cryptographic Layer
+  const shouldReduceMotion = useReducedMotion();
+
+  const selectedLayer = ARCHITECTURE_LAYERS[activeLayer];
+
+  // Motion variants with zero-motion fallback for accessibility
+  const containerVariants = {
+    hidden: { opacity: shouldReduceMotion ? 1 : 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: shouldReduceMotion ? 0 : 0.08,
+        delayChildren: shouldReduceMotion ? 0 : 0.05,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: shouldReduceMotion ? 1 : 0, y: shouldReduceMotion ? 0 : 12 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] as const },
+    },
+  };
+
   return (
     <section
-      aria-label="Department Introduction"
-      className="relative w-full min-h-[calc(90vh-72px)] flex items-center py-12 sm:py-16 lg:py-20 overflow-hidden bg-background"
+      aria-labelledby="hero-title"
+      className="relative w-full border-b border-border bg-background overflow-hidden py-10 sm:py-14 lg:py-16"
     >
+      {/* ── ARCHITECTURAL CORNER REGISTRATION CROSSHAIRS ── */}
+      <span
+        className="absolute top-3 left-4 font-mono text-[10px] text-text-muted/40 select-none hidden sm:block"
+        aria-hidden="true"
+      >
+        + 12.9716° N / 77.5946° E
+      </span>
+      <span
+        className="absolute top-3 right-4 font-mono text-[10px] text-text-muted/40 select-none hidden sm:block"
+        aria-hidden="true"
+      >
+        SEC_ID // DEPT_IOT_CYBER +
+      </span>
+
       <Container>
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 xl:gap-12 items-center">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="space-y-10 sm:space-y-12"
+        >
           {/* ═══════════════════════════════════════════════════════ */}
-          {/* LEFT COLUMN: 7 COLUMNS (CONTENT & HIERARCHY)          */}
+          {/* ZONE 1: TOP ARCHITECTURAL SYSTEM TELEMETRY FRAME      */}
           {/* ═══════════════════════════════════════════════════════ */}
-          <div className="lg:col-span-7 flex flex-col items-start space-y-6">
-            {/* 1. Technical Eyebrow (Restrained JetBrains Mono) */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-[var(--radius-sm)] bg-surface-subtle border border-border">
-              <span
-                className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"
-                aria-hidden="true"
-              />
-              <span className="font-mono text-[11px] sm:text-xs tracking-wider text-text-muted uppercase">
-                DEPT OF IOT & CYBER SECURITY · SYS:ACADEMIC
+          <motion.div
+            variants={itemVariants}
+            className="w-full pb-3 border-b border-border flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-text-muted font-mono"
+          >
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-accent animate-pulse" aria-hidden="true" />
+              <span className="font-semibold text-text-primary tracking-wider uppercase">
+                DEPT OF IOT & CYBER SECURITY
               </span>
+              <span className="text-border" aria-hidden="true">/</span>
+              <span className="text-[11px] hidden md:inline">ACADEMIC & RESEARCH MATRIX</span>
             </div>
 
-            {/* 2. Display-1 Headline (Plus Jakarta Sans, Weight 700) */}
-            <h1 className="font-display text-[var(--text-display-1)] font-bold tracking-tight text-text-primary leading-[1.08]">
-              Engineering Resilient Connected Systems & Cyber Defenses
-            </h1>
+            <div className="flex items-center gap-4 text-[11px]">
+              <span className="text-primary font-medium">NBA TIER-1 ACCREDITED</span>
+              <span className="text-border hidden sm:inline" aria-hidden="true">|</span>
+              <span className="hidden sm:inline">6 RESEARCH TESTBEDS</span>
+              <span className="text-border hidden sm:inline" aria-hidden="true">|</span>
+              <span className="text-text-primary font-medium">EST. 2020</span>
+            </div>
+          </motion.div>
 
-            {/* 3. Narrative Body (Inter, Body-lg, max-w-[56ch]) */}
-            <p className="font-body text-base lg:text-[var(--text-body-lg)] text-text-muted leading-relaxed max-w-[56ch]">
-              Advancing engineering rigor in connected embedded architectures, threat analysis,
-              and cryptographic defense. We prepare researchers and engineers to design,
-              evaluate, and protect critical digital ecosystems in an adversarial world.
-            </p>
+          {/* ═══════════════════════════════════════════════════════ */}
+          {/* ZONE 2: COMMANDING EDITORIAL HEADLINE & THESIS        */}
+          {/* ═══════════════════════════════════════════════════════ */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+            <div className="lg:col-span-8 space-y-6">
+              {/* Restrained Eyebrow */}
+              <motion.div variants={itemVariants} className="inline-flex items-center gap-2">
+                <span className="font-mono text-xs uppercase tracking-widest text-primary font-semibold">
+                  01 // CONVERGENCE OF CONNECTED HARDWARE & DEFENSE
+                </span>
+              </motion.div>
 
-            {/* 4. Action Controls (Standardized Button Primitives) */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2 w-full sm:w-auto">
-              <Link href="/about" className="w-full sm:w-auto">
-                <Button variant="primary" size="lg" className="w-full sm:w-auto">
-                  <span>Explore Programs</span>
-                  <ArrowRight className="w-4 h-4 stroke-[1.5]" aria-hidden="true" />
-                </Button>
-              </Link>
-              <Link href="/faculty" className="w-full sm:w-auto">
-                <Button variant="outline" size="lg" className="w-full sm:w-auto">
-                  <span>View Faculty Directory</span>
-                </Button>
-              </Link>
+              {/* Display Headline in Plus Jakarta Sans */}
+              <motion.h1
+                id="hero-title"
+                variants={itemVariants}
+                className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-[3.25rem] xl:text-[3.75rem] font-bold tracking-tight text-text-primary leading-[1.08]"
+              >
+                Engineering Resilient Connected Systems & Cryptographic Defenses.
+              </motion.h1>
+
+              {/* Lead Editorial Narrative (Inter, Body-lg) */}
+              <motion.p
+                variants={itemVariants}
+                className="font-body text-base sm:text-lg text-text-muted leading-relaxed max-w-[62ch]"
+              >
+                Advancing engineering rigor across embedded silicon microarchitectures, real-time wireless
+                telemetry, and high-assurance cryptographic enclaves. We prepare scholars to design,
+                stress-test, and protect critical cyber-physical ecosystems.
+              </motion.p>
+
+              {/* Action Vectors — Grounded strictly in existing routes (No "Explore Programs") */}
+              <motion.div
+                variants={itemVariants}
+                className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto"
+              >
+                <Link href="/about" className="w-full sm:w-auto">
+                  <Button variant="primary" size="lg" className="w-full sm:w-auto">
+                    <span>Department Overview</span>
+                    <ArrowRight className="w-4 h-4 stroke-[1.5]" aria-hidden="true" />
+                  </Button>
+                </Link>
+
+                <Link href="/faculty" className="w-full sm:w-auto">
+                  <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                    <span>Faculty Directory & Research</span>
+                  </Button>
+                </Link>
+
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center justify-center gap-1.5 px-4 py-3 text-xs font-semibold font-mono text-text-muted hover:text-primary transition-colors text-center sm:text-left"
+                >
+                  <span>OFFICIAL INQUIRIES</span>
+                  <ArrowRight className="w-3.5 h-3.5 stroke-[1.5]" aria-hidden="true" />
+                </Link>
+              </motion.div>
             </div>
 
-            {/* 5. Credibility & Accreditation Indicators (PRD.md §3.1) */}
-            <div className="pt-6 sm:pt-8 border-t border-border w-full flex flex-wrap items-center gap-y-3 gap-x-6 text-xs text-text-muted">
-              <div className="flex items-center gap-2">
-                <ShieldCheck
-                  className="w-4 h-4 stroke-[1.5] text-primary flex-shrink-0"
-                  aria-hidden="true"
-                />
-                <span className="font-medium text-text-primary">NBA Accredited (Tier-1)</span>
+            {/* Right Column: Institutional Verification Ledger */}
+            <motion.div
+              variants={itemVariants}
+              className="lg:col-span-4 rounded-[var(--radius-lg)] bg-surface border border-border p-6 space-y-5 shadow-sm"
+            >
+              <div className="flex items-center justify-between pb-3 border-b border-border text-[11px] font-mono text-text-muted select-none">
+                <span className="font-semibold text-text-primary uppercase tracking-wider">
+                  INSTITUTIONAL METRICS
+                </span>
+                <span>PRD VERIFIED</span>
               </div>
-              <div className="w-1 h-1 rounded-full bg-border hidden sm:block" aria-hidden="true" />
-              <div className="flex items-center gap-2">
-                <Award
-                  className="w-4 h-4 stroke-[1.5] text-primary flex-shrink-0"
-                  aria-hidden="true"
-                />
-                <span className="font-medium text-text-primary">NAAC A++ Institutional Grade</span>
+
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <ShieldCheck className="w-5 h-5 text-primary flex-shrink-0 mt-0.5 stroke-[1.5]" aria-hidden="true" />
+                  <div className="space-y-0.5">
+                    <p className="font-body font-semibold text-sm text-text-primary">
+                      NBA Tier-1 Accredited
+                    </p>
+                    <p className="font-body text-xs text-text-muted">
+                      Full Washington Accord compliance for global professional parity
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3 pt-3 border-t border-border/70">
+                  <Award className="w-5 h-5 text-primary flex-shrink-0 mt-0.5 stroke-[1.5]" aria-hidden="true" />
+                  <div className="space-y-0.5">
+                    <p className="font-body font-semibold text-sm text-text-primary">
+                      NAAC A++ Institutional Grade
+                    </p>
+                    <p className="font-body text-xs text-text-muted">
+                      Premier research evaluation benchmark and autonomous faculty council
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3 pt-3 border-t border-border/70">
+                  <Activity className="w-5 h-5 text-accent flex-shrink-0 mt-0.5 stroke-[1.5]" aria-hidden="true" />
+                  <div className="space-y-0.5">
+                    <p className="font-body font-semibold text-sm text-text-primary">
+                      6 Research Testbeds
+                    </p>
+                    <p className="font-body text-xs text-text-muted">
+                      Cyber range, SCADA controller grids, and embedded IoT testing benches
+                    </p>
+                  </div>
+                </div>
               </div>
-              <div className="w-1 h-1 rounded-full bg-border hidden sm:block" aria-hidden="true" />
-              <div className="flex items-center gap-2 font-mono text-[11px]">
-                <span className="text-accent font-semibold">6</span>
-                <span>Specialized Research Testbeds</span>
+
+              <div className="pt-2 border-t border-border text-[11px] font-mono text-text-muted flex justify-between">
+                <span>FACULTY COUNCIL</span>
+                <span className="text-primary font-semibold">12+ DOCTORAL CHAIRS</span>
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* ═══════════════════════════════════════════════════════ */}
-          {/* RIGHT COLUMN: 5 COLUMNS (STRUCTURED VISUAL & MOTIF)   */}
+          {/* ZONE 3: INTEGRATED CYBER-PHYSICAL ARCHITECTURE BUS     */}
+          {/* (Replaces the generic isolated screenshot/box mockup)   */}
           {/* ═══════════════════════════════════════════════════════ */}
-          <div className="lg:col-span-5 w-full">
-            <div className="relative w-full rounded-[var(--radius-lg)] bg-surface border border-border shadow-sm overflow-hidden">
-              {/* Corner Registration Crosshairs (Hairline Engineering Markers) */}
-              <span
-                className="absolute top-2 left-2 font-mono text-[10px] text-text-muted/40 select-none z-10"
-                aria-hidden="true"
-              >
-                +
-              </span>
-              <span
-                className="absolute top-2 right-2 font-mono text-[10px] text-text-muted/40 select-none z-10"
-                aria-hidden="true"
-              >
-                +
-              </span>
-              <span
-                className="absolute bottom-2 left-2 font-mono text-[10px] text-text-muted/40 select-none z-10"
-                aria-hidden="true"
-              >
-                +
-              </span>
-              <span
-                className="absolute bottom-2 right-2 font-mono text-[10px] text-text-muted/40 select-none z-10"
-                aria-hidden="true"
-              >
-                +
-              </span>
-
-              {/* Technical Header Bar */}
-              <div className="flex items-center justify-between px-4 py-2.5 border-b border-border bg-surface-subtle/60 text-[11px] font-mono text-text-muted select-none">
+          <motion.div
+            variants={itemVariants}
+            className="w-full rounded-[var(--radius-lg)] bg-surface border border-border shadow-sm p-6 sm:p-8 space-y-6"
+          >
+            {/* Bus Header & Layer Selector */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-border">
+              <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <Cpu className="w-3.5 h-3.5 stroke-[1.5] text-primary" aria-hidden="true" />
-                  <span>TESTBED://IOT_CYBER_LAB_01</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span
-                    className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"
-                    aria-hidden="true"
-                  />
-                  <span className="text-[10px] text-text-primary font-medium">TELEMETRY:OK</span>
-                </div>
-              </div>
-
-              {/* Visual Frame & Subordinate Technical SVG Motif */}
-              <div className="relative aspect-[4/3] w-full flex flex-col items-center justify-center p-6 bg-surface">
-                {/* Hairline Coordinate Grid Pattern (Subordinate) */}
-                <svg
-                  className="absolute inset-0 w-full h-full text-border/60 pointer-events-none"
-                  aria-hidden="true"
-                >
-                  <defs>
-                    <pattern
-                      id="hero-grid-pattern"
-                      width="28"
-                      height="28"
-                      patternUnits="userSpaceOnUse"
-                    >
-                      <path
-                        d="M 28 0 L 0 0 0 28"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1"
-                      />
-                    </pattern>
-                  </defs>
-                  <rect width="100%" height="100%" fill="url(#hero-grid-pattern)" />
-                </svg>
-
-                {/* Subordinate Network Topology Schematic (Allowed Technical Motif) */}
-                <svg
-                  viewBox="0 0 360 220"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="absolute inset-0 w-full h-full text-text-muted/40 pointer-events-none"
-                  aria-hidden="true"
-                >
-                  {/* Hairline Data Flow Mesh Lines */}
-                  <line
-                    x1="60"
-                    y1="70"
-                    x2="150"
-                    y2="120"
-                    stroke="currentColor"
-                    strokeWidth="1"
-                    strokeDasharray="3 3"
-                  />
-                  <line
-                    x1="150"
-                    y1="120"
-                    x2="280"
-                    y2="80"
-                    stroke="currentColor"
-                    strokeWidth="1"
-                  />
-                  <line
-                    x1="150"
-                    y1="120"
-                    x2="220"
-                    y2="180"
-                    stroke="currentColor"
-                    strokeWidth="1"
-                    strokeDasharray="3 3"
-                  />
-                  <line
-                    x1="280"
-                    y1="80"
-                    x2="320"
-                    y2="150"
-                    stroke="currentColor"
-                    strokeWidth="1"
-                  />
-                  <line
-                    x1="220"
-                    y1="180"
-                    x2="320"
-                    y2="150"
-                    stroke="currentColor"
-                    strokeWidth="1"
-                    strokeDasharray="3 3"
-                  />
-
-                  {/* Node 1: Sensor Cluster */}
-                  <circle cx="60" cy="70" r="5" stroke="var(--primary)" strokeWidth="1.5" fill="var(--surface)" />
-                  <circle cx="60" cy="70" r="2" fill="var(--primary)" />
-                  <text x="50" y="55" fill="currentColor" fontSize="9" fontFamily="monospace">NODE:01</text>
-
-                  {/* Node 2: IoT Gateway Hub */}
-                  <circle cx="150" cy="120" r="6" stroke="var(--primary)" strokeWidth="1.5" fill="var(--surface)" />
-                  <circle cx="150" cy="120" r="2.5" fill="var(--primary)" />
-                  <text x="135" y="140" fill="currentColor" fontSize="9" fontFamily="monospace">GW:EDGE</text>
-
-                  {/* Node 3: Cryptographic Hardware Enclave (Accented) */}
-                  <rect x="272" y="72" width="16" height="16" rx="3" stroke="var(--accent)" strokeWidth="1.5" fill="var(--surface)" />
-                  <circle cx="280" cy="80" r="2" fill="var(--accent)" />
-                  <text x="260" y="65" fill="var(--accent)" fontSize="9" fontFamily="monospace" fontWeight="600">ENCLAVE:A</text>
-
-                  {/* Node 4: Threat Telemetry Probe */}
-                  <circle cx="220" cy="180" r="5" stroke="var(--primary)" strokeWidth="1.5" fill="var(--surface)" />
-                  <circle cx="220" cy="180" r="2" fill="var(--primary)" />
-                  <text x="210" y="200" fill="currentColor" fontSize="9" fontFamily="monospace">PROBE:04</text>
-
-                  {/* Node 5: SCADA Controller */}
-                  <circle cx="320" cy="150" r="5" stroke="var(--primary)" strokeWidth="1.5" fill="var(--surface)" />
-                  <circle cx="320" cy="150" r="2" fill="var(--primary)" />
-                  <text x="305" y="170" fill="currentColor" fontSize="9" fontFamily="monospace">SCADA:09</text>
-                </svg>
-
-                {/* Staging & Replacement Notice for Final Authentic Photography */}
-                <div className="relative z-10 flex flex-col items-center text-center max-w-[280px] sm:max-w-[320px] p-4 rounded-[var(--radius-md)] bg-surface/90 border border-border shadow-sm">
-                  <div className="w-8 h-8 rounded-[var(--radius-md)] bg-primary-wash border border-primary/20 flex items-center justify-center text-primary mb-2.5">
-                    <Cpu className="w-4 h-4 stroke-[1.5]" aria-hidden="true" />
-                  </div>
-                  <span className="font-display font-semibold text-xs sm:text-sm text-text-primary">
-                    Advanced IoT & Cyber Range Testbed
+                  <span className="w-2 h-2 rounded-full bg-primary" aria-hidden="true" />
+                  <span className="font-mono text-xs uppercase tracking-wider text-text-primary font-bold">
+                    CYBER-PHYSICAL COMPUTING BUS // LIVE ARCHITECTURAL TOPOLOGY
                   </span>
-                  <p className="mt-1 text-[11px] text-text-muted leading-snug">
-                    Structured staging placeholder preserving exact 4:3 geometry and coordinate alignment.
-                  </p>
-                  <div className="mt-2.5 inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-subtle font-mono text-[10px] text-text-muted border border-border">
-                    <span>ASPECT: 4:3</span>
-                    <span>·</span>
-                    <span>ASSET: 1200×900PX</span>
-                  </div>
                 </div>
+                <p className="font-body text-xs text-text-muted">
+                  Interactive multi-layer framework uniting connected hardware with defensive cryptographic enclaves.
+                </p>
               </div>
 
-              {/* Technical Telemetry Footer Bar */}
-              <div className="flex items-center justify-between px-4 py-2 border-t border-border bg-surface-subtle/40 text-[10px] font-mono text-text-muted select-none">
-                <span>BUS: SPI/CAN/ETHERNET</span>
-                <span className="hidden sm:inline">CRYPTO: AES-256-GCM</span>
-                <span>TESTBED: SECURE</span>
+              {/* Layer Selector Chips */}
+              <div className="flex flex-wrap items-center gap-1.5" role="tablist" aria-label="Architecture Layers">
+                {ARCHITECTURE_LAYERS.map((layer, index) => {
+                  const isSelected = activeLayer === index;
+                  return (
+                    <button
+                      key={layer.id}
+                      type="button"
+                      role="tab"
+                      aria-selected={isSelected}
+                      onClick={() => setActiveLayer(index)}
+                      className={`px-3 py-1.5 rounded-[var(--radius-sm)] font-mono text-[11px] uppercase transition-all duration-150 focus-visible:outline-2 focus-visible:outline-ring ${
+                        isSelected
+                          ? "bg-primary text-[var(--p-white)] font-semibold shadow-sm"
+                          : "bg-surface-subtle text-text-muted hover:text-text-primary hover:bg-surface-subtle/80"
+                      }`}
+                    >
+                      {layer.id.toUpperCase()}
+                    </button>
+                  );
+                })}
               </div>
             </div>
-          </div>
-        </div>
+
+            {/* Active Layer Deep Dive Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+              {/* Left Details (7 cols) */}
+              <div className="lg:col-span-7 space-y-4">
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-xs font-semibold text-primary">
+                    {selectedLayer.tag}
+                  </span>
+                  <span className="text-border" aria-hidden="true">·</span>
+                  <span className="font-mono text-[11px] text-accent font-medium">
+                    {selectedLayer.status}
+                  </span>
+                </div>
+
+                <h2 className="font-display text-xl sm:text-2xl font-bold text-text-primary">
+                  {selectedLayer.title}
+                </h2>
+
+                <p className="font-body text-sm text-text-muted leading-relaxed">
+                  {selectedLayer.domain}
+                </p>
+
+                {/* Technical Specifications */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-2">
+                  {selectedLayer.specs.map((spec) => (
+                    <div
+                      key={spec}
+                      className="px-3 py-2 rounded-[var(--radius-sm)] bg-surface-subtle border border-border text-[11px] font-mono text-text-primary"
+                    >
+                      <span className="text-primary font-bold mr-1.5">▸</span>
+                      {spec}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right Diagnostic Signal Monitor (5 cols) */}
+              <div className="lg:col-span-5 rounded-[var(--radius-md)] bg-footer-bg text-footer-text-primary p-5 space-y-3 font-mono border border-footer-border select-none">
+                <div className="flex items-center justify-between text-[10px] text-footer-text-muted pb-2 border-b border-footer-border">
+                  <span>TELEMETRY BUS MONITOR</span>
+                  <span className="text-primary font-semibold">SIGNAL: OPTIMAL</span>
+                </div>
+
+                <div className="text-xs space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-footer-text-muted">ACTIVE PROTOCOL:</span>
+                    <span className="text-footer-text-primary font-semibold">{selectedLayer.id.toUpperCase()}_DISCIPLINE_V1</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-footer-text-muted">DATA THROUGHPUT:</span>
+                    <span className="text-accent">{selectedLayer.telemetry}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-footer-text-muted">VERIFICATION:</span>
+                    <span className="text-primary font-medium">HARDWARE ROOTED</span>
+                  </div>
+                </div>
+
+                <div className="pt-2 border-t border-footer-border flex items-center justify-between text-[10px] text-footer-text-muted">
+                  <span>LABORATORY BENCH #04</span>
+                  <span>SYNC: DETERMINISTIC</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom 4-Layer Synchronous Data Ribbon */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pt-3 border-t border-border">
+              {ARCHITECTURE_LAYERS.map((layer, index) => {
+                const isSelected = activeLayer === index;
+                return (
+                  <button
+                    key={layer.id}
+                    type="button"
+                    onClick={() => setActiveLayer(index)}
+                    className={`p-3 rounded-[var(--radius-sm)] border text-left transition-all ${
+                      isSelected
+                        ? "bg-primary-wash/50 border-primary"
+                        : "bg-surface border-border hover:border-primary/40"
+                    }`}
+                  >
+                    <span className="font-mono text-[10px] uppercase text-text-muted block">
+                      {layer.tag.split("//")[0].trim()}
+                    </span>
+                    <span className="font-display font-semibold text-xs text-text-primary block mt-0.5 truncate">
+                      {layer.title}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </motion.div>
+        </motion.div>
       </Container>
     </section>
   );
